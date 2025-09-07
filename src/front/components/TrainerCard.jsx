@@ -73,7 +73,7 @@ export default function TrainerCard({ trainer }) {
     };
 
     const handleSelectDate = (date) => {
-        dispatch({ type: "add_to_cart", payload: { ...trainer, date } });
+        // Esta función ya no se usa directamente, se maneja en HourModal
         setShowModal(false);
         navigate(`/trainer/${trainer.name}`);
     };

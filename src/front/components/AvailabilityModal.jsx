@@ -81,8 +81,12 @@ export default function AvailabilityModal({ show, onClose, onSelectDate, trainer
                         return null;
                     }}
                     tileDisabled={({ date, view }) => {
-                        // Deshabilitar días pasados
-                        return view === 'month' && date < today;
+                        // Deshabilitar días no disponibles y días pasados
+                        if (view === 'month' && date < today) return true;
+                        if (view === 'month' && date.getMonth() === month) {
+                            return !availableDays.includes(date.getDate());
+                        }
+                        return false;
                     }}
                 />
                 {/* Modal de horas */}
@@ -92,6 +96,7 @@ export default function AvailabilityModal({ show, onClose, onSelectDate, trainer
                     onClose={() => setShowHourModal(false)}
                     selectedHour={selectedHour}
                     setSelectedHour={setSelectedHour}
+                    selectedDate={selectedDate}
                 />
             </div>
         </div>
