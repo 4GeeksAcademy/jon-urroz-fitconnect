@@ -1,0 +1,124 @@
+/* Selector de horas: fondo verde FitConnect al hacer hover en la opción */
+select:focus option:hover,
+select:focus option:checked {
+  background: #319795 !important;
+  color: #fff !important;
+}
+/* Selector de horas: opción seleccionada en verde FitConnect */
+select option:checked,
+select option[selected] {
+  background: #319795 !important;
+  color: #fff !important;
+}
+/* Selector de horas: borde y fondo verde FitConnect */
+select {
+  border: 2px solid #319795 !important;
+  background: #e6f7f6 !important;
+  color: #319795 !important;
+  border-radius: 8px;
+  font-weight: 600;
+}
+/* Selector de horas: opciones verdes al hover */
+select option {
+  color: #319795;
+}
+select option:hover,
+select option:focus {
+  background: #e6f7f6 !important;
+  color: #319795 !important;
+}
+.react-calendar__tile--now {
+  background: #f8f8f8 !important;
+  color: #bbb !important;
+  border-radius: 8px;
+}
+.react-calendar__tile--neighboringMonth {
+  background: #fff !important;
+  color: #bbb !important;
+  border-radius: 8px;
+}
+/* Días grises (no disponibles) y flechas: color verde claro al hover */
+/* Días grises y flechas: fondo verde FitConnect */
+.react-calendar__tile--now,
+.react-calendar__tile--neighboringMonth,
+.react-calendar__navigation__arrow,
+.react-calendar__navigation__label,
+.react-calendar__tile--active {
+  background: #e6f7f6 !important;
+  color: #319795 !important;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+.react-calendar__tile--now:hover,
+.react-calendar__tile--neighboringMonth:hover,
+.react-calendar__navigation__arrow:hover,
+.react-calendar__navigation__label:hover {
+  background: #c6ece7 !important;
+  color: #24706b !important;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  box-shadow: none !important;
+  background: none !important;
+}
+.fitconnect-available-day abbr:hover {
+  box-shadow: 0 0 0 3px #38b2ac55;
+  cursor: pointer;
+  filter: brightness(1.08);
+}
+/* Eliminar los puntos debajo de los días de la semana en react-calendar */
+.react-calendar__month-view__weekdays__weekday {
+  border-bottom: none !important;
+  text-decoration: none !important;
+}
+.react-calendar__month-view__weekdays__weekday abbr {
+  border-bottom: none !important;
+  text-decoration: none !important;
+}
+
+/* Eliminar los puntos debajo de los días */
+.react-calendar__month-view__days__day--weekend,
+.react-calendar__month-view__days__day--neighboringMonth,
+.react-calendar__tile:enabled:after,
+.react-calendar__tile:disabled:after {
+  content: none !important;
+}
+
+.fitconnect-available-day {
+  position: relative;
+}
+.fitconnect-available-day abbr {
+  position: relative;
+  z-index: 2;
+  background: #319795;
+  color: #fff !important;
+  border-radius: 50%;
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
+}
+/* Quitar fondo gris y amarillo del 1 y 2 */
+/* Margen superior forzado para la card principal */
+.main-card-margin {
+  margin-top: 72px !important;
+}
+:root {
+  --primary-color: #319795;
+  --navbar-bg: #f8f8f8;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+body {
+  background: var(--navbar-bg);
+}
+
+/* Puedes usar .text-primary en títulos, botones, etc. para aplicar el color principal */
