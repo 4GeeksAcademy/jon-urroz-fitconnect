@@ -79,10 +79,12 @@ export default function TrainerProfile() {
                 <div style={{ fontSize: 17, color: '#222', marginBottom: 8 }}><b>Tarifa horaria</b> <span style={{ color: '#319795', fontWeight: 700 }}>{trainer.price}</span></div>
                 <div style={{ fontSize: 15, color: '#222', marginBottom: 8 }}><b>Responde en</b> <span style={{ color: '#319795', fontWeight: 700 }}>5h</span></div>
                 <div style={{ fontSize: 15, color: '#222', marginBottom: 18 }}><b>Nº alumnos</b> <span style={{ color: '#319795', fontWeight: 700 }}>50+</span></div>
+                {localStorage.getItem("token") &&
                 <button
                     style={{ background: '#319795', color: '#fff', border: 'none', borderRadius: 18, padding: '12px 32px', fontWeight: 700, fontSize: 18, cursor: 'pointer', marginBottom: 12, boxShadow: '0 2px 8px #31979533' }}
                     onClick={() => setShowModal(true)}
                 >Disponibilidad</button>
+                }
                 <AvailabilityModal
                     show={showModal}
                     onClose={() => setShowModal(false)}

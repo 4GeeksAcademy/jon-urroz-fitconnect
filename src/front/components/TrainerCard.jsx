@@ -105,25 +105,27 @@ export default function TrainerCard({ trainer }) {
                 <div style={descStyle}>{trainer.description}</div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 8 }}>
                     <span style={priceStyle}>{trainer.price}/h</span>
-                    <button
-                        style={{
-                            background: "#319795",
-                            color: "#fff",
-                            border: "none",
-                            borderRadius: 18,
-                            padding: "6px 18px",
-                            fontWeight: 600,
-                            fontSize: 15,
-                            cursor: "pointer",
-                            boxShadow: "0 2px 8px #38b2ac33",
-                            transition: "background 0.2s"
-                        }}
-                        onMouseOver={e => e.currentTarget.style.background = '#24706b'}
-                        onMouseOut={e => e.currentTarget.style.background = '#319795'}
-                        onClick={handleAvailability}
-                    >
-                        Disponibilidad
-                    </button>
+                    {localStorage.getItem("token") && (
+                        <button
+                            style={{
+                                background: "#319795",
+                                color: "#fff",
+                                border: "none",
+                                borderRadius: 18,
+                                padding: "6px 18px",
+                                fontWeight: 600,
+                                fontSize: 15,
+                                cursor: "pointer",
+                                boxShadow: "0 2px 8px #38b2ac33",
+                                transition: "background 0.2s"
+                            }}
+                            onMouseOver={e => e.currentTarget.style.background = '#24706b'}
+                            onMouseOut={e => e.currentTarget.style.background = '#319795'}
+                            onClick={handleAvailability}
+                        >
+                            Disponibilidad
+                        </button>
+                    )}
                 </div>
             </div>
             <AvailabilityModal

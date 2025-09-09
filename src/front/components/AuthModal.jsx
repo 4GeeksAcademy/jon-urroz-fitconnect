@@ -71,7 +71,23 @@ export default function AuthModal({ show, onClose }) {
         if (e.target === e.currentTarget) onClose();
     };
 
-    const handlesummitlogin = e => {
+    const handleSubmitRegister = e => {
+        e.preventDefault();
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/register`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password, role:"user" })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.msg);
+                setView("login");
+            });
+    }
+
+    const handleSubmitLogin = e => {
         e.preventDefault();
         fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
             method: "POST",
@@ -84,12 +100,16 @@ export default function AuthModal({ show, onClose }) {
             .then(data => {
                 if (data.token) {
                     localStorage.setItem("token", data.token);
+                    localStorage.setItem("role", data.role);
+                    alert("Login exitoso");
                     onClose();
+                    window.location.reload();
                 } else {
-                    alert(data.msg || "Error al iniciar sesión");
+                    alert(data.msg || "Error en el login");
                 }
             });
     }
+
 
     return (
         <div style={modalBg} onClick={handleBgClick}>
@@ -119,7 +139,7 @@ export default function AuthModal({ show, onClose }) {
                             value={repeatPassword}
                             onChange={e => setRepeatPassword(e.target.value)}
                         />
-                        <button style={btnStyle}>Regístrate</button>
+                        <button onClick={handleSubmitRegister} style={btnStyle}>Regístrate</button>
                         <div style={{ textAlign: "center", marginTop: 18, fontSize: 16 }}>
                             ¿Ya tienes una cuenta? <span style={{ color: "#319795", fontWeight: 700, cursor: "pointer", textDecoration: "underline" }} onClick={() => setView("login")}>Inicia sesión</span>
                         </div>
@@ -141,7 +161,7 @@ export default function AuthModal({ show, onClose }) {
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                         />
-                        <button onClick={handlesummitlogin} style={btnStyle}>Entrar</button>
+                        <button onClick={handleSubmitLogin} style={btnStyle}>Entrar</button>
                         <div style={{ textAlign: "center", marginTop: 18, fontSize: 16 }}>
                             ¿No tienes cuenta? <span style={{ color: "#319795", fontWeight: 700, cursor: "pointer", textDecoration: "underline" }} onClick={() => setView("register")}>Regístrate</span>
                         </div>

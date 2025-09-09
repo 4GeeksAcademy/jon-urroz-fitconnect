@@ -13,6 +13,7 @@ import GiveClass from "./pages/GiveClass";
 import Cart from "./pages/Cart";
 import Trainers from "./pages/Trainers";
 import TrainerProfile from "./pages/TrainerProfile";
+import { PaymentPage } from "./pages/PaymentPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,7 @@ export const router = createBrowserRouter(
       <Route path="/cart" element={<Cart />} />
       <Route path="/trainers" element={<Trainers />} />
       <Route path="/trainer/:name" element={<TrainerProfile />} />
+      <Route path="/payment/:totalAmount/:currency" element={<PaymentPage />} />
     </Route>
   )
 );

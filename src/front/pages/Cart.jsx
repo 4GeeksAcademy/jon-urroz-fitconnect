@@ -1,29 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import { useNavigate } from "react-router-dom";
+
 
 const cartBox = {
-    maxWidth: 520,
+    maxWidth: 600,
     margin: "48px auto",
     background: "#fff",
     borderRadius: 24,
     boxShadow: "0 4px 32px #38b2ac33",
-    padding: "48px 32px 32px 32px",
-    minHeight: 220,
+    padding: "48px 48px 32px 48px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
 };
 
-const productItemStyle = {
+const itemBox = {
     width: "100%",
-    padding: "16px 18px",
-    marginBottom: 16,
-    background: "#f4faff",
-    borderRadius: 12,
-    border: "1px solid #b2dfdb",
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
+    padding: "16px 0",
+    borderBottom: "1px solid #e0f2f1"
 };
 
 const btnStyle = {
@@ -33,94 +31,47 @@ const btnStyle = {
     fontSize: 16,
     borderRadius: 12,
     border: "none",
-    padding: "10px 16px",
+    padding: "10px 18px",
+    marginTop: 16,
+    boxShadow: "0 2px 12px #38b2ac33",
+    cursor: "pointer",
+    width: "100%"
+};
+
+const smallBtn = {
+    background: "#e53e3e",
+    color: "#fff",
+    border: "none",
+    borderRadius: 8,
+    padding: "6px 12px",
     marginLeft: 8,
-    cursor: "pointer"
+    cursor: "pointer",
+    fontWeight: 600
 };
 
-const btnDangerStyle = {
-    ...btnStyle,
-    background: "#e53e3e"
-};
-
-const btnPrimaryStyle = {
-    ...btnStyle,
+const editBtn = {
+    ...smallBtn,
     background: "#3182ce"
 };
 
-const btnSuccessStyle = {
-    ...btnStyle,
-    background: "#38a169",
-    width: "100%",
-    marginTop: 16,
-    padding: "14px 0"
-};
+const Cart = () => {
+    const { store, dispatch } = useGlobalReducer();
+    const products = store.cart || [];
+    const navigate = useNavigate();
 
-const Cart = ({ backendUrl }) => {
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        fetch(`${backendUrl}/api/products`)
-            .then(res => res.json())
-            .then(data => setProducts(data));
-    }, [backendUrl]);
-
-    const addProduct = async (newProduct) => {
-        await fetch(`${backendUrl}/api/products`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newProduct)
-        });
-        fetch(`${backendUrl}/api/products`)
-            .then(res => res.json())
-            .then(data => setProducts(data));
+    const removeFromCart = (idx) => {
+        dispatch({ type: "remove_from_cart", payload: idx });
+    };
+    console.log(products);
+    // Simulación de pago con Stripe
+    const handleStripePayment = () => {
+        const totalAmount = products.reduce((total, item) => {
+            const numericValue = parseFloat(item.price.replace(/[^\d.,]/g, '').replace(',', '.'));
+            return total + numericValue;
+        }, 0);
+        navigate(`/payment/${totalAmount}/EUR`);
     };
 
-    const updateProduct = async (id, updatedProduct) => {
-        await fetch(`${backendUrl}/api/products/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updatedProduct)
-        });
-        fetch(`${backendUrl}/api/products`)
-            .then(res => res.json())
-            .then(data => setProducts(data));
-    };
-
-    const deleteProduct = async (id) => {
-        await fetch(`${backendUrl}/api/products/${id}`, {
-            method: "DELETE"
-        });
-        fetch(`${backendUrl}/api/products`)
-            .then(res => res.json())
-            .then(data => setProducts(data));
-    };
-
-    const handleStripePayment = async () => {
-        if (!products || products.length === 0) {
-            alert("No hay productos en el carrito");
-            return;
-        }
-        const product = products[0];
-        const response = await fetch(`${backendUrl}/api/create-checkout-session`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                name: product.name,
-                price: product.price,
-                description: product.location,
-                success_url: window.location.origin + "/success",
-                cancel_url: window.location.origin + "/cart"
-            })
-        });
-        const data = await response.json();
-        if (data.checkout_url) {
-            window.location.href = data.checkout_url;
-        } else {
-            alert("Error al crear la sesión de pago");
-            console.error("Respuesta del backend:", data);
-        }
-    };
 
     return (
         <div style={{ minHeight: "100vh", background: "var(--navbar-bg)", paddingTop: "48px" }}>
@@ -129,53 +80,34 @@ const Cart = ({ backendUrl }) => {
                 {products && products.length > 0 ? (
                     <div style={{ width: "100%" }}>
                         {products.map((p, i) => (
-                            <div key={i} style={productItemStyle}>
-                                <div>
-                                    <p style={{ fontWeight: 600, margin: 0, color: "#2d3748" }}>{p.name}</p>
-                                    <p style={{ fontSize: 14, color: "#718096", margin: "4px 0 0 0" }}>{p.location}</p>
+                            <div key={i} style={itemBox}>
+                                <img
+                                    src={p.photo}
+                                    alt={p.name}
+                                    style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", marginRight: 16, border: "2px solid #319795" }}
+                                />
+                                <div style={{ flex: 1 }}>
+                                    <div style={{ fontWeight: 700, fontSize: 18 }}>{p.name}</div>
+                                    <div style={{ color: "#319795", fontSize: 15 }}>{p.location}</div>
+                                    <div style={{ color: "#666", fontSize: 14 }}>
+                                        {p.date && <span>Fecha: {new Date(p.date).toLocaleDateString()}</span>}
+                                        {p.hour && <span> | Hora: {p.hour}</span>}
+                                    </div>
                                 </div>
-                                <div style={{ display: "flex", alignItems: "center" }}>
-                                    <span style={{ fontWeight: 700, color: "#319795", marginRight: 16 }}>{p.price} €</span>
-                                    <button
-                                        onClick={() => updateProduct(p.id, { ...p, name: p.name + " (edit)" })}
-                                        style={btnPrimaryStyle}
-                                    >
-                                        Editar
-                                    </button>
-                                    <button
-                                        onClick={() => deleteProduct(p.id)}
-                                        style={btnDangerStyle}
-                                    >
-                                        Eliminar
-                                    </button>
-                                </div>
+                                <span style={{ fontWeight: 700, fontSize: 18 }}>{p.price}</span>
+                                <button style={smallBtn} onClick={() => removeFromCart(i)}>Eliminar</button>
                             </div>
                         ))}
-                        <button onClick={handleStripePayment} style={btnSuccessStyle}>
+                        <button style={btnStyle} onClick={handleStripePayment}>
                             Pagar con Stripe
                         </button>
                     </div>
                 ) : (
-                    <div style={{ textAlign: "center", color: "#718096", marginBottom: 24 }}>
-                        <p style={{ fontSize: 18, margin: 0 }}>El carrito está vacío</p>
-                    </div>
+                    <p style={{ color: "#b2dfdb", fontSize: 18, margin: "32px 0" }}>El carrito está vacío</p>
                 )}
-                <button
-                    onClick={() => addProduct({ name: "Nuevo", price: 10, location: "Demo" })}
-                    style={{
-                        ...btnStyle,
-                        background: "#38a169",
-                        width: "100%",
-                        marginTop: 8,
-                        padding: "14px 0"
-                    }}
-                >
-                    Añadir producto demo
-                </button>
             </div>
         </div>
     );
 };
 
-// ...existing code...
 export default Cart;

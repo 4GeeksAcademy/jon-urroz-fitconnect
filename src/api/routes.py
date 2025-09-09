@@ -499,3 +499,18 @@ def delete_product(current_user, product_id):
     db.session.delete(product)
     db.session.commit()
     return jsonify({"msg": "Producto eliminado"}), 200
+
+@api.route('/create-payment', methods=["POST"])
+def create_payment():
+    response_body = {}
+    try:
+        data = request.json
+        intent = stripe.PaymentIntent.create(
+            amount=data["amount"], currency=data["currency"], automatic_payment_methods={'enabled': True})
+        print(intent)
+        response_body["client_secret"] = intent["client_secret"]
+        return response_body, 200
+    except Exception as e:
+        response_body["success"] = False
+        response_body["error"] = str(e)
+        return response_body, 403

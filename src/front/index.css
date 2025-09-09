@@ -37,8 +37,7 @@ select option:focus {
   color: #bbb !important;
   border-radius: 8px;
 }
-/* Días grises (no disponibles) y flechas: color verde claro al hover */
-/* Días grises y flechas: fondo verde FitConnect */
+
 .react-calendar__tile--now,
 .react-calendar__tile--neighboringMonth,
 .react-calendar__navigation__arrow,
@@ -68,7 +67,7 @@ select option:focus {
   cursor: pointer;
   filter: brightness(1.08);
 }
-/* Eliminar los puntos debajo de los días de la semana en react-calendar */
+
 .react-calendar__month-view__weekdays__weekday {
   border-bottom: none !important;
   text-decoration: none !important;
@@ -78,7 +77,6 @@ select option:focus {
   text-decoration: none !important;
 }
 
-/* Eliminar los puntos debajo de los días */
 .react-calendar__month-view__days__day--weekend,
 .react-calendar__month-view__days__day--neighboringMonth,
 .react-calendar__tile:enabled:after,
@@ -103,8 +101,7 @@ select option:focus {
   font-weight: 700;
   font-size: 16px;
 }
-/* Quitar fondo gris y amarillo del 1 y 2 */
-/* Margen superior forzado para la card principal */
+
 .main-card-margin {
   margin-top: 72px !important;
 }
@@ -121,4 +118,3 @@ body {
   background: var(--navbar-bg);
 }
 
-/* Puedes usar .text-primary en títulos, botones, etc. para aplicar el color principal */

@@ -17,7 +17,7 @@ export default function HourModal({ show, onClose, selectedHour, setSelectedHour
                 photo: trainer.photo,
                 price: trainer.price,
                 location: trainer.location,
-                date: selectedDate,
+                date: selectedDate ? selectedDate.toISOString() : null,
                 hour: selectedHour
             }
         });
